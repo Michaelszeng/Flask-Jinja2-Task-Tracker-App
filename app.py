@@ -20,7 +20,6 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 load_dotenv()
 
-#Define and initialize database test.db
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["SQLALCHEMY_DATABASE_URI"]   #Placing the database URI in .env so it is secure (things in .env get but in OS environment variables); .env is in gitignore
 db = SQLAlchemy(app)
 CORS(app)
@@ -38,7 +37,7 @@ class Todo(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if request.method == 'POST':
+    if request.method == 'POST':    #Need to use POST request if retreiving new content from html
         task_content = request.form['new_task_content']  #Get content of form with id 'content'
         new_task = Todo(content=task_content)
         try:
@@ -54,7 +53,7 @@ def index():
 
 @app.route('/delete/<int:id>', methods=['GET'])
 def delete(id):
-    task_to_delete = Todo.query.get_or_404(id)  # get task by id (or 404 if not found)
+    task_to_delete = Todo.query.get_or_404(id)  #Get task by id (or 404 if not found)
     try:
         db.session.delete(task_to_delete)
         db.session.commit()
@@ -64,10 +63,10 @@ def delete(id):
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    task_to_update = Todo.query.get_or_404(id)
+    task_to_update = Todo.query.get_or_404(id)  #Get task by id (or 404 if not found)
     if request.method == 'POST':
-        task_to_update.content = request.form['new_task_content']
         try:
+            task_to_update.content = request.form['new_task_content']
             db.session.commit()
             return redirect('/')
         except:
