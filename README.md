@@ -3,6 +3,7 @@
 Task Tracker App made using Flask, HTML, Jinja2.
 
 Demo:
+
 ![image](https://user-images.githubusercontent.com/35478698/213901580-bb07d816-2552-4f7a-86fe-88e1fb0d5c14.png)
 
 ![image](https://user-images.githubusercontent.com/35478698/213901592-440ff542-abd4-4a40-99bd-a2c7a937e945.png)
