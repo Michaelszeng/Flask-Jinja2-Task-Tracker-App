@@ -52,5 +52,26 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()    #Get all the existing tasks
         return render_template('index.html', tasks=tasks)    #Automatically looks for a 'templates' folder
 
-# if __name__ == "__main__":
-#     app.run(debug=True, port=8888)
+@app.route('/delete/<int:id>', methods=['GET'])
+def delete(id):
+    task_to_delete = Todo.query.get_or_404(id)  # get task by id (or 404 if not found)
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "Error deleting task"
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+    task_to_update = Todo.query.get_or_404(id)
+    if request.method == 'POST':
+        task_to_update.content = request.form['new_task_content']
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Error editing task"
+    else:
+        return render_template('update.html', task=task_to_update)
+    
